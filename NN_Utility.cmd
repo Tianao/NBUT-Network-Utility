@@ -9,11 +9,14 @@ echo.
 echo 部分修复操作需使用管理员身份运行（如未以管理员身份运行，建议先关闭本工具，再右键单击我的图标，选择以管理员身份运行）
 echo.
 echo 1 诊断信息收集（面向高级用户，普通用户请在运维工程师或其他专业人士指导下使用）
+echo.
 echo 2 快速修复，命令网络适配器的 TCP/IPv4 协议栈重新通过 DHCP 自动配置（初次使用请选此项，不会触动重要配置，是十分保守的操作）
-echo 3 深度修复，重置 Winsock 目录，然后重启 Windows，会丢失已保存的无线网络（适用于由新装软件或 Windows 更新带来的疑难/玄学问题，也可以作为重装系统前的尝试，高级用户请注意 Winsock 目录变动对应用程序带来的影响）
+echo.
+echo 3 深度修复，重置 Winsock 目录和 TCP/IP 协议栈，然后重启 Windows，会丢失已保存的无线网络（适用于由新装软件或 Windows 更新带来的疑难/玄学问题，也可以作为重装系统前的尝试，高级用户请注意 Winsock 目录变动对应用程序带来的影响）
+echo.
 echo 4 打开校园网登录页面（适用于 Captive Portal 异常时，说人话就是弹不出登录页面）
 echo.
-set /p option=请输入序号按回车键执行: 
+set /p option=请输入命令序号后按回车键执行: 
 if "%option%" == "1" goto diagnostics
 if "%option%" == "2" goto fastrepair
 if "%option%" == "3" goto deeprepair
@@ -23,6 +26,7 @@ goto menu
 )
 
 :diagnostics
+cls
 echo Starting NBUT Network Diagnostics...
 
 ver
@@ -77,6 +81,7 @@ pause
 exit
 
 :fastrepair
+cls
 netsh interface show interface
 set /p interface=请输入待修复的网络适配器名称（有线网络请输入以太网或本地连接，如有数字不可省略），按回车键完成: 
 echo.
@@ -99,8 +104,10 @@ exit
 
 
 :deeprepair
+cls
 netsh winsock reset
-echo 即将重新启动，请在重启后再次尝试使用校园网，无线网络需要手动重新连接，按任意键确认重启
+netsh int ip reset
+echo 按任意键立即重新启动 Windows，请在重启后再次尝试使用校园网，无线网络需要手动重新连接。
 pause
 shutdown /r /t 0 /f
 
