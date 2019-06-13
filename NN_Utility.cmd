@@ -1,5 +1,5 @@
 @echo off
-title NBUT Network Utility v1.0 - By Tianao
+title NBUT Network Utility v1.1 - By Tianao
 
 goto menu
 :menu
